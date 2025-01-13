@@ -1,24 +1,18 @@
-use ignore::{overrides::OverrideBuilder, WalkBuilder};
+mod cli;
+
+use ignore::{WalkBuilder, overrides::OverrideBuilder};
 use pest_fmt::{Formatter, PestResult};
 use std::{error::Error, fs, io::Read, path::Path};
 use toml::Value;
 
 use clap::Parser;
 
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Cli {
-    /// The file or path to format
-    #[arg(default_value = ".")]
-    file: Vec<String>,
-    #[clap(long, short, default_value = "false")]
-    stdin: bool,
-}
-
 fn main() -> Result<(), Box<dyn Error>> {
-    let cli = Cli::parse();
+    let cli = cli::Args::parse();
 
-    if cli.stdin {
+    if let Some(generator) = cli.gen_completion {
+        cli::print_completions(generator);
+    } else if cli.stdin {
         let mut source = String::new();
         std::io::stdin().read_to_string(&mut source).expect("failed read source from stdin");
         println!("{}", format(&source).unwrap_or_else(|e| panic!("failed to format: {:?}", e)));

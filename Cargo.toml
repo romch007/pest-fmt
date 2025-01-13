@@ -16,12 +16,17 @@ pest_meta = "2.5"
 text-utils = "0.2"
 toml = "0.5"
 clap = { version = "4.4.15", features = ["derive"] }
+clap_complete = "4.5.42"
 
 [dev-dependencies]
 criterion = "0.4.0"
 indoc = "2"
 pretty_assertions = "1.3.0"
 quote = "1.0"
+
+[build-dependencies]
+clap = { version = "4.4.15", features = ["derive"] }
+clap_complete = "4.5.42"
 
 [[bin]]
 name = "pestfmt"
